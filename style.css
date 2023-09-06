@@ -1,6 +1,6 @@
 .logo{
     background-color: #0a2e7f;
-    width: 10%;
+    width: 100px;
     padding-left: 1%;
 }
 .top_bar{
@@ -8,24 +8,32 @@
     margin-left: -10px;
     background-color: #0a2e7f; 
     width: 111%;
+    height: 110px;
 }
 .import_button{
     position: absolute;
-    right: 1%;
+    right: 10px;
+    top: 28px;
     background-color: #1d52bc;
-    width: 15%;
-    height: 5%;
+    width: 120px;
+    height: 40px;
     border-radius: 10px;
     border: 5px solid #2d2b2b;
-    text-align: center;
+    font-size: 18;
 }
 .export_button{
     position: absolute;
-    right: 20%;
-    background-color: #226add;
-    width: 15%;
-    height: 5%;
+    right: 140px;
+    top: 28px;
+    background-color: #1d52bc;
+    width: 120px;
+    height: 40px;
     border-radius: 10px;
     border: 5px solid #2d2b2b;
-    text-align: center;
+    font-size: 18;
+}
+.spreadsheetcss{
+    background-color: #2d2b2b;
+    width: 110%;
+    margin: -10px;
 }
