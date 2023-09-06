@@ -1,0 +1,31 @@
+.logo{
+    background-color: #0a2e7f;
+    width: 10%;
+    padding-left: 1%;
+}
+.top_bar{
+    margin-top: -10px;
+    margin-left: -10px;
+    background-color: #0a2e7f; 
+    width: 111%;
+}
+.import_button{
+    position: absolute;
+    right: 1%;
+    background-color: #1d52bc;
+    width: 15%;
+    height: 5%;
+    border-radius: 10px;
+    border: 5px solid #2d2b2b;
+    text-align: center;
+}
+.export_button{
+    position: absolute;
+    right: 20%;
+    background-color: #226add;
+    width: 15%;
+    height: 5%;
+    border-radius: 10px;
+    border: 5px solid #2d2b2b;
+    text-align: center;
+}
