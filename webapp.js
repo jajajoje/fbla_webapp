@@ -50,7 +50,6 @@ function createList(list){
         buttons[i].style.fontSize = "18px"
     }
     document.getElementById("spreadsheet").style.height = exampleData.length*61;
-    // container.style.height = exampleData.length*75;
 }
 
 function removeListItem (){
@@ -62,6 +61,11 @@ function addListItem (){
 };
 
 function buttonClicked(dataList){
+    for(var i = 0; i < exampleData.length; i++){
+        buttons[i].style.width = "65%"
+    }
+    //panel
+    //the comended code is useless unless you want to reset it after clicking on another button
     var element = document.getElementById("infoId")
     element !== null ? document.getElementById("infoId").remove() : 0
     infoPage = document.createElement("div");
@@ -73,14 +77,54 @@ function buttonClicked(dataList){
     infoPage.style.height = "100%"
     infoPage.style.position = "fixed"
     infoPage.style.backgroundColor = "#1d52bc"
-    for(var i = 0; i < exampleData.length; i++){
-        buttons[i].style.width = "65%"
-    }
+    //button creaton
+    exit_button = document.createElement("button")
+    var containerPower = document.getElementById("infoId")
+    containerPower.appendChild(exit_button)
+    exit_button.innerHTML = "<b>x</b>"
+    exit_button.style.height = "5%"
+    exit_button.style.aspectRatio = "1/1"
+    exit_button.style.backgroundColor = "red"
+    exit_button.style.margin= "10px";
+    exit_button.style.borderRadius = "17px"
+    exit_button.style.fontSize = "150%"
+    exit_button.style.right = "10px"
+    //main title (company name)
+    titleHeader = document.createElement("h3")
+    var containerPower = document.getElementById("infoId")
+    containerPower.appendChild(titleHeader)
+    titleHeader.innerHTML = dataList[0]
+    titleHeader.style.fontSize = "35px"
+    titleHeader.style.margin = "10px"
+    titleHeader.style.textAlign = "center"
+    //mini infotitle (date created and location)
+    miniTitle = document.createElement("p")
+    var containerPower = document.getElementById("infoId")
+    containerPower.appendChild(miniTitle)
+    miniTitle.innerHTML = dataList[2] + " Created " + dataList[3]
+    miniTitle.style.fontSize = "10px"
+    miniTitle.style.textAlign = "center"
+    //resources (company resources)
+    resourcesText = document.createElement("p")
+    var containerPower = document.getElementById("infoId")
+    containerPower.appendChild(resourcesText)
+    resourcesText.innerHTML = dataList[1]
+    resourcesText.style.margin = "10px"
+    //website(hyperlink)
+    companyLink = document.createElement("p")
+    var containerPower = document.getElementById("infoId")
+    containerPower.appendChild(companyLink)
+    companyLink.innerHTML = dataList[4]
+    companyLink.setAttribute("href","https://"+dataList[4])
+    companyLink.style.textAlign = "center"
 };
 
+//execute this after the button has been created
+// exit_button.addEventListener('click', () => {
 
+// });
 
 buttons[0].addEventListener('click', () => {
     console.log("yes")
-    buttonClicked(0);
+    buttonClicked(exampleData[0]);
 });
