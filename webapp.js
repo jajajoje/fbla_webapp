@@ -39,7 +39,7 @@ function createList(list){
         var container = document.getElementById("spreadsheet")
         container.appendChild(buttons[i])
 
-        buttons[i].innerHTML = exampleData[i]
+        buttons[i].innerHTML = exampleData[i][0]+exampleData[i][1]
         buttons[i].style.backgroundColor = "#1d52bc"
         buttons[i].style.width = "90%"
         buttons[i].style.height = "50px"
@@ -47,6 +47,7 @@ function createList(list){
         buttons[i].style.marginTop = "-25px"
         buttons[i].style.left = "5%"
         buttons[i].style.top = 135+60*i+"px"
+        buttons[i].style.fontSize = "18px"
     }
     document.getElementById("spreadsheet").style.height = exampleData.length*61;
     // container.style.height = exampleData.length*75;
@@ -60,17 +61,26 @@ function addListItem (){
 
 };
 
-function buttonClicked(){
-    // var element = document.getElementById("infoId")
-    element !== null ? document.getElementById("infoId").remove() : console.log(false);
+function buttonClicked(dataList){
+    var element = document.getElementById("infoId")
+    element !== null ? document.getElementById("infoId").remove() : 0
     infoPage = document.createElement("div");
     var container = document.getElementById("spreadsheet");
     infoPage.setAttribute("id", "infoId");
     container.appendChild(infoPage);
+    infoPage.style.right = "0px"
+    infoPage.style.width = "25%"
+    infoPage.style.height = "100%"
+    infoPage.style.position = "fixed"
+    infoPage.style.backgroundColor = "#1d52bc"
+    for(var i = 0; i < exampleData.length; i++){
+        buttons[i].style.width = "65%"
+    }
 };
 
 
 
 buttons[0].addEventListener('click', () => {
+    console.log("yes")
     buttonClicked(0);
 });
