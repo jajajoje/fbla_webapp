@@ -34,9 +34,9 @@ createList(exampleData);
 
 
 function createList(list){
-    for(var i = 0; i < exampleData.length; i++){
+    for(let i = 0; i < exampleData.length; i++){
         buttons[i] = document.createElement("button")
-        var container = document.getElementById("spreadsheet")
+        let container = document.getElementById("spreadsheet")
         container.appendChild(buttons[i])
 
         buttons[i].innerHTML = exampleData[i][0]+exampleData[i][1]
@@ -61,15 +61,15 @@ function addListItem (){
 };
 
 function buttonClicked(dataList){
-    for(var i = 0; i < exampleData.length; i++){
+    for(let i = 0; i < exampleData.length; i++){
         buttons[i].style.width = "65%"
     }
     //panel
-    //the comended code is useless unless you want to reset it after clicking on another button
-    var element = document.getElementById("infoId")
+    let element = document.getElementById("infoId")
     element !== null ? document.getElementById("infoId").remove() : 0
-    infoPage = document.createElement("div");
-    var container = document.getElementById("spreadsheet");
+    
+    let infoPage = document.createElement("div");
+    let container = document.getElementById("spreadsheet");
     infoPage.setAttribute("id", "infoId");
     container.appendChild(infoPage);
     infoPage.style.right = "0px"
@@ -78,19 +78,20 @@ function buttonClicked(dataList){
     infoPage.style.position = "fixed"
     infoPage.style.backgroundColor = "#1d52bc"
     //button creaton
-    exit_button = document.createElement("button")
+    let exit_button = document.createElement("button")
     var containerPower = document.getElementById("infoId")
     containerPower.appendChild(exit_button)
     exit_button.innerHTML = "<b>x</b>"
-    exit_button.style.height = "5%"
+    exit_button.style.height = "35px"
     exit_button.style.aspectRatio = "1/1"
     exit_button.style.backgroundColor = "red"
     exit_button.style.margin= "10px";
-    exit_button.style.borderRadius = "17px"
+    exit_button.style.position = "absolute"
+    exit_button.style.borderRadius = "30%"
     exit_button.style.fontSize = "150%"
-    exit_button.style.right = "10px"
+    exit_button.style.right = "20px"
     //main title (company name)
-    titleHeader = document.createElement("h3")
+    let titleHeader = document.createElement("h3")
     var containerPower = document.getElementById("infoId")
     containerPower.appendChild(titleHeader)
     titleHeader.innerHTML = dataList[0]
@@ -98,33 +99,44 @@ function buttonClicked(dataList){
     titleHeader.style.margin = "10px"
     titleHeader.style.textAlign = "center"
     //mini infotitle (date created and location)
-    miniTitle = document.createElement("p")
+    let miniTitle = document.createElement("p")
     var containerPower = document.getElementById("infoId")
     containerPower.appendChild(miniTitle)
     miniTitle.innerHTML = dataList[2] + " Created " + dataList[3]
     miniTitle.style.fontSize = "10px"
     miniTitle.style.textAlign = "center"
     //resources (company resources)
-    resourcesText = document.createElement("p")
+    let resourcesText = document.createElement("p")
     var containerPower = document.getElementById("infoId")
     containerPower.appendChild(resourcesText)
     resourcesText.innerHTML = dataList[1]
     resourcesText.style.margin = "10px"
+    resourcesText.style.marginTop = "25px"
     //website(hyperlink)
-    companyLink = document.createElement("p")
+    let companyLink = document.createElement("p")
     var containerPower = document.getElementById("infoId")
     containerPower.appendChild(companyLink)
     companyLink.innerHTML = dataList[4]
     companyLink.setAttribute("href","https://"+dataList[4])
     companyLink.style.textAlign = "center"
+    resourcesText.style.marginTop = "25px"
+
+    //this is executed after the button has been created
+    exit_button.addEventListener('click', () => {
+        for(let i = 0; i < exampleData.length; i++){
+            buttons[i].style.width = "90%"
+        }
+        exit_button.remove()
+        titleHeader.remove()
+        miniTitle.remove()
+        resourcesText.remove()
+        companyLink.remove()
+        infoPage.remove()
+    });
 };
-
-//execute this after the button has been created
-// exit_button.addEventListener('click', () => {
-
-// });
-
-buttons[0].addEventListener('click', () => {
-    console.log("yes")
-    buttonClicked(exampleData[0]);
-});
+// creates button events
+for(let i = 0; i < exampleData.length; i++){
+    buttons[i].addEventListener('click', () => {
+        buttonClicked(exampleData[i]);
+    });
+}
