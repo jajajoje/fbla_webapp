@@ -48,4 +48,14 @@
     outline: none;
     padding-left: 1%;
     padding-right: 1%;
+    border: 3px solid #2d2b2b;
+}
+.dropdown_search{
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0);
+    outline: none;
+    width: 10%;
+    top: 40px;
+    left: 55%;
+    border-width: 0px;
 }

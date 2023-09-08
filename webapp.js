@@ -48,8 +48,26 @@ function createList(list){
         buttons[i].style.left = "5%"
         buttons[i].style.top = 135+60*i+"px"
         buttons[i].style.fontSize = "18px"
+        buttons[i].style.border = "3px solid #2d2b2b"
     }
     document.getElementById("spreadsheet").style.height = exampleData.length*61;
+}
+
+function search(textInput, value, list2d){
+    console.log(textInput, value)
+    console.log(list2d)
+
+    // for(let k = 0; k < list2d; k++){
+    //     if(list2d[i][value].includes(textInput)){
+
+    //     }else
+    // }
+
+    // function fuzzySearch(items, searchTerm) {
+    //     return items.filter((item) => {
+    //         return item.toLowerCase().includes(searchTerm);
+    //     });
+    // }
 }
 
 function removeListItem (){
@@ -113,12 +131,14 @@ function buttonClicked(dataList){
     resourcesText.style.margin = "10px"
     resourcesText.style.marginTop = "25px"
     //website(hyperlink)
-    let companyLink = document.createElement("p")
+    let companyLinkWrap = document.createElement("p")
+    let companyLink = document.createElement("a")
     var containerPower = document.getElementById("infoId")
-    containerPower.appendChild(companyLink)
+    containerPower.appendChild(companyLinkWrap)
+    companyLinkWrap.appendChild(companyLink)
     companyLink.innerHTML = dataList[4]
     companyLink.setAttribute("href","https://"+dataList[4])
-    companyLink.style.textAlign = "center"
+    companyLinkWrap.style.textAlign = "center"
     resourcesText.style.marginTop = "25px"
 
     //this is executed after the button has been created
@@ -140,3 +160,18 @@ for(let i = 0; i < exampleData.length; i++){
         buttonClicked(exampleData[i]);
     });
 }
+
+const dropdown = document.getElementById('dropdown');
+const inputElement = document.getElementById('textSearch')
+
+dropdown.addEventListener('change', function () {
+    let valueInput = dropdown.value
+    let textInput = inputElement.value
+    search(textInput,exampleData[valueInput])
+});
+
+inputElement.addEventListener('input', function () {
+    let valueInput = dropdown.value
+    let textInput = inputElement.value
+    search(textInput,valueInput,exampleData)
+})
