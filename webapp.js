@@ -30,16 +30,17 @@ var exampleData = [
 
 var buttons = []
 
-createList(exampleData);
+refreshList(exampleData)
 
-
-function createList(list){
+//will create the buttons and or replace them
+function refreshList(list){
+    buttons = []
     for(let i = 0; i < exampleData.length; i++){
         buttons[i] = document.createElement("button")
         let container = document.getElementById("spreadsheet")
         container.appendChild(buttons[i])
 
-        buttons[i].innerHTML = exampleData[i][0]+exampleData[i][1]
+        buttons[i].innerHTML = exampleData[i][0]+' '+exampleData[i][1]
         buttons[i].style.backgroundColor = "#1d52bc"
         buttons[i].style.width = "90%"
         buttons[i].style.height = "50px"
@@ -50,33 +51,84 @@ function createList(list){
         buttons[i].style.fontSize = "18px"
         buttons[i].style.border = "3px solid #2d2b2b"
     }
-    document.getElementById("spreadsheet").style.height = exampleData.length*61;
+    document.getElementById("spreadsheet").style.height = exampleData.length*61
+}
+//called as soon as the text input or drop down change
+function listSearch(textInput, value, list2d){
+    let trueTimes = 0;
+    for(var l = 0; l < list2d.length; l++){
+        if(simpleSearch(list2d[l][value].toString(),textInput.toString())){
+            buttons[l].style.top = 135+60*trueTimes+"px"
+            buttons[l].style.display = "block"
+            trueTimes ++
+        }else{
+            buttons[l].style.display = "none"
+        }
+    }
+
+}
+//search algorithm 
+function simpleSearch(text, input) {
+    text = text.toLowerCase()
+    input = input.toLowerCase()
+  
+    return text.includes(input)
+}
+//export button
+function exportCompanyList (){
+    const csvString = convertArrayToCSV(exampleData)
+    const blob = new Blob([csvString], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url;
+    link.download = 'data.csv'
+    link.click()
+    URL.revokeObjectURL(url)
+}
+//input input
+function importCompanyList (file){
+    const reader = new FileReader()
+
+    reader.onload = function(e) {
+        const csvContent = e.target.result
+        exampleData = csvToArray(csvContent)
+        console.log(csvToArray(csvContent))
+    };
+
+    reader.readAsText(file)
+    refreshList(exampleData)
+}
+// csv shinanigans
+function csvToArray(csvString) {
+    const rows = csvString.split('\n');
+    const result = [];
+
+    for (const row of rows) {
+        const values = row.split(',');
+        result.push(values);
+    }
+
+    return result;
+}
+function convertArrayToCSV(data) {
+    const csvRows = []
+    for (const row of data) {
+      const csvRow = row.map(value => `"${value}"`).join(",")
+      csvRows.push(csvRow)
+    }
+    return csvRows.join("\n")
 }
 
-function search(textInput, value, list2d){
-    console.log(textInput, value)
-    console.log(list2d)
 
-    // for(let k = 0; k < list2d; k++){
-    //     if(list2d[i][value].includes(textInput)){
+//potental for the future
 
-    //     }else
-    // }
+// function removeListItem (){
 
-    // function fuzzySearch(items, searchTerm) {
-    //     return items.filter((item) => {
-    //         return item.toLowerCase().includes(searchTerm);
-    //     });
-    // }
-}
+// }
 
-function removeListItem (){
+// function addListItem (){
 
-};
-
-function addListItem (){
-
-};
+// }
 
 function buttonClicked(dataList){
     for(let i = 0; i < exampleData.length; i++){
@@ -88,8 +140,8 @@ function buttonClicked(dataList){
     
     let infoPage = document.createElement("div");
     let container = document.getElementById("spreadsheet");
-    infoPage.setAttribute("id", "infoId");
-    container.appendChild(infoPage);
+    infoPage.setAttribute("id", "infoId")
+    container.appendChild(infoPage)
     infoPage.style.right = "0px"
     infoPage.style.width = "25%"
     infoPage.style.height = "100%"
@@ -143,35 +195,43 @@ function buttonClicked(dataList){
 
     //this is executed after the button has been created
     exit_button.addEventListener('click', () => {
-        for(let i = 0; i < exampleData.length; i++){
-            buttons[i].style.width = "90%"
-        }
-        exit_button.remove()
-        titleHeader.remove()
-        miniTitle.remove()
-        resourcesText.remove()
-        companyLink.remove()
-        infoPage.remove()
-    });
-};
+        infoPanelRemove ()
+    })
+}
+
+function infoPanelRemove (){
+    for(let i = 0; i < exampleData.length; i++){
+        buttons[i].style.width = "90%"
+    }
+    exit_button.remove()
+    titleHeader.remove()
+    miniTitle.remove()
+    resourcesText.remove()
+    companyLink.remove()
+    infoPage.remove()
+}
 // creates button events
 for(let i = 0; i < exampleData.length; i++){
     buttons[i].addEventListener('click', () => {
         buttonClicked(exampleData[i]);
-    });
+    })
 }
 
 const dropdown = document.getElementById('dropdown');
 const inputElement = document.getElementById('textSearch')
+const exportButton1 = document.getElementById('exportButton')
 
 dropdown.addEventListener('change', function () {
     let valueInput = dropdown.value
     let textInput = inputElement.value
-    search(textInput,exampleData[valueInput])
-});
+    listSearch(textInput,valueInput,exampleData)
+})
 
 inputElement.addEventListener('input', function () {
     let valueInput = dropdown.value
     let textInput = inputElement.value
-    search(textInput,valueInput,exampleData)
+    listSearch(textInput,valueInput,exampleData)
+})
+exportButton1.addEventListener('click', function (){
+    exportCompanyList()
 })
