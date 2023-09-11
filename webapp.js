@@ -29,6 +29,7 @@ var exampleData = [
 ]
 
 var buttons = []
+var oldListLength = null
 var infoPage = null
 var exit_button = null
 var titleHeader = null
@@ -44,29 +45,34 @@ refreshList(exampleData)
 
 //will create the buttons and or replace them
 function refreshList(list){
-    console.log(document.getElementById("button0") == null)
     console.log(document.getElementById("button0") !== null)
     if(document.getElementById("button0") !== null){
-        for(let i = 0; i < exampleData.length; i++){
+        // let buttonParent = document.getElementById("spreadsheet")
+        for(let i = 0; i < oldListLength; i++){
+            //this needs to work but it wont
             buttons[i].remove()
-            console.log("yes")
+            // console.log(document.getElementById("button"+i))
+            // let buttonReset = document.getElementById("button"+i)
+            // buttonParent.removeChild(buttonReset)
+            console.log("test")
         }
         if(document.getElementById("infoId") !== null){
+            console.log("removing  info element")
             exit_button.remove()
             titleHeader.remove()
             miniTitle.remove()
             resourcesText.remove()
             companyLink.remove()
-            infoPage.remove()
+            document.getElementById("infoId").remove()
         }
     }
-    // buttons = []
-    for(let i = 0; i < exampleData.length; i++){
+    buttons = []
+    for(let i = 0; i < list.length; i++){
         buttons[i] = document.createElement("button")
         let container = document.getElementById("spreadsheet")
         container.appendChild(buttons[i])
         buttons[i].setAttribute("id", "button"+i)
-        buttons[i].innerHTML = exampleData[i][0]+' '+exampleData[i][1]
+        buttons[i].innerHTML = list[i][0]+' '+list[i][1]
         buttons[i].style.backgroundColor = "#1d52bc"
         buttons[i].style.width = "90%"
         buttons[i].style.height = "50px"
@@ -77,7 +83,8 @@ function refreshList(list){
         buttons[i].style.fontSize = "18px"
         buttons[i].style.border = "3px solid #2d2b2b"
     }
-    document.getElementById("spreadsheet").style.height = exampleData.length*61
+    document.getElementById("spreadsheet").style.height = list.length*61
+    buttonEvents(exampleData)
 }
 //called as soon as the text input or drop down change
 function listSearch(textInput, value, list2d){
@@ -113,15 +120,16 @@ function exportCompanyList (){
 }
 //input input
 function importCompanyList (file){
+    oldListLength = exampleData.length
     const reader = new FileReader()
-
-    reader.onload = function(e) {
-        const csvContent = e.target.result
+    reader.onload = function(event) {
+        const csvContent = event.target.result
         exampleData = csvToArray(csvContent)
         console.log(exampleData)
     };
 
     reader.readAsText(file)
+
     document.getElementById('textSearch').value = ''
     var dropdownIndex = document.getElementById('dropdown')
     dropdownIndex.selectedIndex = 0; 
@@ -158,7 +166,7 @@ function convertArrayToCSV(data) {
 // function addListItem (){
 
 // }
-
+//this creates the info panel when a buttons on a row are made
 function buttonClicked(dataList){
     for(let i = 0; i < exampleData.length; i++){
         buttons[i].style.width = "65%"
@@ -232,14 +240,19 @@ function buttonClicked(dataList){
     })
 }
 
-function infoPanelRemove (){
-}
+// function infoPanelRemove (){
+// } look into this later
+
 // creates button events
-for(let i = 0; i < exampleData.length; i++){
-    buttons[i].addEventListener('click', () => {
-        buttonClicked(exampleData[i]);
-    })
+function buttonEvents(list){
+    for(let i = 0; i < list.length; i++){
+        buttons[i].addEventListener('click', () => {
+            buttonClicked(list[i])
+        })
+    }
 }
+
+// buttonEvents(exampleData)
 
 dropdown.addEventListener('change', function () {
     let valueInput = dropdown.value
