@@ -29,17 +29,43 @@ var exampleData = [
 ]
 
 var buttons = []
+var infoPage = null
+var exit_button = null
+var titleHeader = null
+var miniTitle = null
+var resourcesText = null
+var companyLink = null
+var companyLinkWrap = null
+var dropdown = document.getElementById('dropdown')
+var inputElement = document.getElementById('textSearch')
+var exportButton1 = document.getElementById('exportButton')
 
 refreshList(exampleData)
 
 //will create the buttons and or replace them
 function refreshList(list){
-    buttons = []
+    console.log(document.getElementById("button0") == null)
+    console.log(document.getElementById("button0") !== null)
+    if(document.getElementById("button0") !== null){
+        for(let i = 0; i < exampleData.length; i++){
+            buttons[i].remove()
+            console.log("yes")
+        }
+        if(document.getElementById("infoId") !== null){
+            exit_button.remove()
+            titleHeader.remove()
+            miniTitle.remove()
+            resourcesText.remove()
+            companyLink.remove()
+            infoPage.remove()
+        }
+    }
+    // buttons = []
     for(let i = 0; i < exampleData.length; i++){
         buttons[i] = document.createElement("button")
         let container = document.getElementById("spreadsheet")
         container.appendChild(buttons[i])
-
+        buttons[i].setAttribute("id", "button"+i)
         buttons[i].innerHTML = exampleData[i][0]+' '+exampleData[i][1]
         buttons[i].style.backgroundColor = "#1d52bc"
         buttons[i].style.width = "90%"
@@ -92,10 +118,13 @@ function importCompanyList (file){
     reader.onload = function(e) {
         const csvContent = e.target.result
         exampleData = csvToArray(csvContent)
-        console.log(csvToArray(csvContent))
+        console.log(exampleData)
     };
 
     reader.readAsText(file)
+    document.getElementById('textSearch').value = ''
+    var dropdownIndex = document.getElementById('dropdown')
+    dropdownIndex.selectedIndex = 0; 
     refreshList(exampleData)
 }
 // csv shinanigans
@@ -110,6 +139,7 @@ function csvToArray(csvString) {
 
     return result;
 }
+
 function convertArrayToCSV(data) {
     const csvRows = []
     for (const row of data) {
@@ -118,7 +148,6 @@ function convertArrayToCSV(data) {
     }
     return csvRows.join("\n")
 }
-
 
 //potental for the future
 
@@ -138,7 +167,7 @@ function buttonClicked(dataList){
     let element = document.getElementById("infoId")
     element !== null ? document.getElementById("infoId").remove() : 0
     
-    let infoPage = document.createElement("div");
+    infoPage = document.createElement("div");
     let container = document.getElementById("spreadsheet");
     infoPage.setAttribute("id", "infoId")
     container.appendChild(infoPage)
@@ -148,8 +177,8 @@ function buttonClicked(dataList){
     infoPage.style.position = "fixed"
     infoPage.style.backgroundColor = "#1d52bc"
     //button creaton
-    let exit_button = document.createElement("button")
-    var containerPower = document.getElementById("infoId")
+    exit_button = document.createElement("button")
+    let containerPower = document.getElementById("infoId")
     containerPower.appendChild(exit_button)
     exit_button.innerHTML = "<b>x</b>"
     exit_button.style.height = "35px"
@@ -161,31 +190,27 @@ function buttonClicked(dataList){
     exit_button.style.fontSize = "150%"
     exit_button.style.right = "20px"
     //main title (company name)
-    let titleHeader = document.createElement("h3")
-    var containerPower = document.getElementById("infoId")
+    titleHeader = document.createElement("h3")
     containerPower.appendChild(titleHeader)
     titleHeader.innerHTML = dataList[0]
     titleHeader.style.fontSize = "35px"
     titleHeader.style.margin = "10px"
     titleHeader.style.textAlign = "center"
     //mini infotitle (date created and location)
-    let miniTitle = document.createElement("p")
-    var containerPower = document.getElementById("infoId")
+    miniTitle = document.createElement("p")
     containerPower.appendChild(miniTitle)
     miniTitle.innerHTML = dataList[2] + " Created " + dataList[3]
     miniTitle.style.fontSize = "10px"
     miniTitle.style.textAlign = "center"
     //resources (company resources)
-    let resourcesText = document.createElement("p")
-    var containerPower = document.getElementById("infoId")
+    resourcesText = document.createElement("p")
     containerPower.appendChild(resourcesText)
     resourcesText.innerHTML = dataList[1]
     resourcesText.style.margin = "10px"
     resourcesText.style.marginTop = "25px"
     //website(hyperlink)
-    let companyLinkWrap = document.createElement("p")
-    let companyLink = document.createElement("a")
-    var containerPower = document.getElementById("infoId")
+    companyLinkWrap = document.createElement("p")
+    companyLink = document.createElement("a")
     containerPower.appendChild(companyLinkWrap)
     companyLinkWrap.appendChild(companyLink)
     companyLink.innerHTML = dataList[4]
@@ -195,20 +220,19 @@ function buttonClicked(dataList){
 
     //this is executed after the button has been created
     exit_button.addEventListener('click', () => {
-        infoPanelRemove ()
+        for(let i = 0; i < exampleData.length; i++){
+            buttons[i].style.width = "90%"
+        }
+        exit_button.remove()
+        titleHeader.remove()
+        miniTitle.remove()
+        resourcesText.remove()
+        companyLink.remove()
+        infoPage.remove()
     })
 }
 
 function infoPanelRemove (){
-    for(let i = 0; i < exampleData.length; i++){
-        buttons[i].style.width = "90%"
-    }
-    exit_button.remove()
-    titleHeader.remove()
-    miniTitle.remove()
-    resourcesText.remove()
-    companyLink.remove()
-    infoPage.remove()
 }
 // creates button events
 for(let i = 0; i < exampleData.length; i++){
@@ -216,10 +240,6 @@ for(let i = 0; i < exampleData.length; i++){
         buttonClicked(exampleData[i]);
     })
 }
-
-const dropdown = document.getElementById('dropdown');
-const inputElement = document.getElementById('textSearch')
-const exportButton1 = document.getElementById('exportButton')
 
 dropdown.addEventListener('change', function () {
     let valueInput = dropdown.value
@@ -232,6 +252,7 @@ inputElement.addEventListener('input', function () {
     let textInput = inputElement.value
     listSearch(textInput,valueInput,exampleData)
 })
+
 exportButton1.addEventListener('click', function (){
     exportCompanyList()
 })
