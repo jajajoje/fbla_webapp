@@ -45,25 +45,18 @@ refreshList(exampleData)
 
 //will create the buttons and or replace them
 function refreshList(list){
-    console.log(document.getElementById("button0") !== null)
+    console.log(list)
     if(document.getElementById("button0") !== null){
-        // let buttonParent = document.getElementById("spreadsheet")
         for(let i = 0; i < oldListLength; i++){
-            //this needs to work but it wont
             buttons[i].remove()
-            // console.log(document.getElementById("button"+i))
-            // let buttonReset = document.getElementById("button"+i)
-            // buttonParent.removeChild(buttonReset)
-            console.log("test")
         }
         if(document.getElementById("infoId") !== null){
-            console.log("removing  info element")
             exit_button.remove()
             titleHeader.remove()
             miniTitle.remove()
             resourcesText.remove()
             companyLink.remove()
-            document.getElementById("infoId").remove()
+            infoPage.remove()
         }
     }
     buttons = []
@@ -72,6 +65,7 @@ function refreshList(list){
         let container = document.getElementById("spreadsheet")
         container.appendChild(buttons[i])
         buttons[i].setAttribute("id", "button"+i)
+        buttons[i].setAttribute("class", "dataButtons")
         buttons[i].innerHTML = list[i][0]+' '+list[i][1]
         buttons[i].style.backgroundColor = "#1d52bc"
         buttons[i].style.width = "90%"
@@ -122,10 +116,11 @@ function exportCompanyList (){
 function importCompanyList (file){
     oldListLength = exampleData.length
     const reader = new FileReader()
+    //reader.onload is async
     reader.onload = function(event) {
         const csvContent = event.target.result
+        console.log(csvContent)
         exampleData = csvToArray(csvContent)
-        console.log(exampleData)
     };
 
     reader.readAsText(file)
@@ -139,12 +134,13 @@ function importCompanyList (file){
 function csvToArray(csvString) {
     const rows = csvString.split('\n');
     const result = [];
-
+    console.log("test")
     for (const row of rows) {
         const values = row.split(',');
         result.push(values);
     }
-
+    console.log(result)
+    exampleData = result
     return result;
 }
 
