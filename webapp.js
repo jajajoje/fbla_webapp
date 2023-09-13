@@ -205,6 +205,7 @@ function buttonClicked(dataList){
     infoPage.style.width = "25%"
     infoPage.style.height = "100%"
     infoPage.style.position = "fixed"
+    // infoPage.style.top = "0px"
     infoPage.style.backgroundColor = "#1d52bc"
     //button creaton
     exit_button = document.createElement("button")
