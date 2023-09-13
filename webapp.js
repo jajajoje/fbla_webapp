@@ -29,6 +29,8 @@ var exampleData = [
 ]
 
 var buttons = []
+var companyName = []
+var companyResources = []
 var oldListLength = null
 var infoPage = null
 var exit_button = null
@@ -45,7 +47,6 @@ refreshList(exampleData)
 
 //will create the buttons and or replace them
 function refreshList(list){
-    console.log(list)
     if(document.getElementById("button0") !== null){
         for(let i = 0; i < oldListLength; i++){
             buttons[i].remove()
@@ -62,11 +63,24 @@ function refreshList(list){
     buttons = []
     for(let i = 0; i < list.length; i++){
         buttons[i] = document.createElement("button")
+        companyName[i] = document.createElement("p")
+        companyResources[i] = document.createElement("p")
+        
         let container = document.getElementById("spreadsheet")
         container.appendChild(buttons[i])
         buttons[i].setAttribute("id", "button"+i)
         buttons[i].setAttribute("class", "dataButtons")
-        buttons[i].innerHTML = list[i][0]+' '+list[i][1]
+        buttons[i].appendChild(companyName[i])
+        buttons[i].appendChild(companyResources[i])
+        companyName[i].innerHTML = '<b>'+list[i][0]+'</b>'
+        companyResources[i].innerHTML = list[i][1]
+        companyName[i].style.position = "absolute"
+        companyName[i].style.textAlign = "left"
+        companyName[i].style.top = "-5px"
+        companyResources[i].style.position = "absolute"
+        companyResources[i].style.textAlign = "center"
+        companyResources[i].style.left = "30%"
+        companyResources[i].style.top = "-5px"
         buttons[i].style.backgroundColor = "#1d52bc"
         buttons[i].style.width = "90%"
         buttons[i].style.height = "50px"
@@ -119,36 +133,50 @@ function importCompanyList (file){
     //reader.onload is async
     reader.onload = function(event) {
         const csvContent = event.target.result
-        console.log(csvContent)
         exampleData = csvToArray(csvContent)
+        document.getElementById('textSearch').value = ''
+        var dropdownIndex = document.getElementById('dropdown')
+        dropdownIndex.selectedIndex = 0; 
+        refreshList(exampleData)
     };
 
     reader.readAsText(file)
-
-    document.getElementById('textSearch').value = ''
-    var dropdownIndex = document.getElementById('dropdown')
-    dropdownIndex.selectedIndex = 0; 
-    refreshList(exampleData)
 }
 // csv shinanigans
 function csvToArray(csvString) {
-    const rows = csvString.split('\n');
-    const result = [];
-    console.log("test")
+    const rows = csvString.split('\n')
+    const result = []
     for (const row of rows) {
-        const values = row.split(',');
-        result.push(values);
+        const values = []
+        let currentValue = ''
+        let insideQuotes = false
+        for (let i = 0; i < row.length; i++) {
+            const char = row[i]
+            if (char === '"') {
+                insideQuotes = !insideQuotes
+            } else if (char === ',' && !insideQuotes) {
+                values.push(currentValue)
+                currentValue = ''
+            } else {
+                currentValue += char
+            }
+        }
+        values.push(currentValue)
+        result.push(values)
     }
-    console.log(result)
-    exampleData = result
     return result;
 }
-
 function convertArrayToCSV(data) {
     const csvRows = []
     for (const row of data) {
-      const csvRow = row.map(value => `"${value}"`).join(",")
-      csvRows.push(csvRow)
+        const csvRow = row.map(value => {
+            if (typeof value === 'string' && value.includes(',')) {
+                return `"${value.replace(/"/g, '""')}"`
+            } else {
+                return value
+            }
+        }).join(",")
+        csvRows.push(csvRow)
     }
     return csvRows.join("\n")
 }
@@ -156,12 +184,10 @@ function convertArrayToCSV(data) {
 //potental for the future
 
 // function removeListItem (){
-
 // }
-
 // function addListItem (){
-
 // }
+
 //this creates the info panel when a buttons on a row are made
 function buttonClicked(dataList){
     for(let i = 0; i < exampleData.length; i++){
@@ -219,6 +245,9 @@ function buttonClicked(dataList){
     companyLinkWrap.appendChild(companyLink)
     companyLink.innerHTML = dataList[4]
     companyLink.setAttribute("href","https://"+dataList[4])
+    companyLink.style.backgroundColor = "#2d2b2b"
+    companyLink.style.padding = "10px"
+    companyLink.style.borderRadius = "10px"
     companyLinkWrap.style.textAlign = "center"
     resourcesText.style.marginTop = "25px"
 
