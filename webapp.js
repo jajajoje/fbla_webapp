@@ -64,8 +64,7 @@ function refreshList(list){
     for(let i = 0; i < list.length; i++){
         buttons[i] = document.createElement("button")
         companyName[i] = document.createElement("p")
-        companyResources[i] = document.createElement("p")
-        
+        companyResources[i] = document.createElement("p") 
         let container = document.getElementById("spreadsheet")
         container.appendChild(buttons[i])
         buttons[i].setAttribute("id", "button"+i)
@@ -201,11 +200,7 @@ function buttonClicked(dataList){
     let container = document.getElementById("spreadsheet");
     infoPage.setAttribute("id", "infoId")
     container.appendChild(infoPage)
-    infoPage.style.right = "0px"
-    infoPage.style.width = "25%"
-    infoPage.style.height = "100%"
-    infoPage.style.position = "fixed"
-    infoPage.style.backgroundColor = "#1d52bc"
+    infoPage.classList.add("infoPage")
     //button creaton
     exit_button = document.createElement("button")
     let containerPower = document.getElementById("infoId")
@@ -222,6 +217,11 @@ function buttonClicked(dataList){
     //main title (company name)
     titleHeader = document.createElement("h3")
     containerPower.appendChild(titleHeader)
+    if(dataList[0] !== undefined){
+        titleHeader.innerHTML = dataList[0]
+    }else{
+        titleHeader.innerHTML = "No company name given"
+    }
     titleHeader.innerHTML = dataList[0]
     titleHeader.style.fontSize = "35px"
     titleHeader.style.margin = "10px"
@@ -229,13 +229,21 @@ function buttonClicked(dataList){
     //mini infotitle (date created and location)
     miniTitle = document.createElement("p")
     containerPower.appendChild(miniTitle)
-    miniTitle.innerHTML = dataList[2] + " Created " + dataList[3]
+    if(dataList[2] !== undefined){
+        miniTitle.innerHTML = dataList[2] + " Created " + dataList[3]
+    }else{
+        miniTitle.innerHTML = "No date created given"
+    }
     miniTitle.style.fontSize = "10px"
     miniTitle.style.textAlign = "center"
-    //resources (company resources)
+    //Company resources
     resourcesText = document.createElement("p")
     containerPower.appendChild(resourcesText)
-    resourcesText.innerHTML = dataList[1]
+    if(dataList[1] !== undefined){
+        resourcesText.innerHTML = dataList[1]
+    }else{
+        resourcesText.innerHTML = "No resources given"
+    }
     resourcesText.style.margin = "10px"
     resourcesText.style.marginTop = "25px"
     //website(hyperlink)
@@ -243,8 +251,13 @@ function buttonClicked(dataList){
     companyLink = document.createElement("a")
     containerPower.appendChild(companyLinkWrap)
     companyLinkWrap.appendChild(companyLink)
-    companyLink.innerHTML = dataList[4]
-    companyLink.setAttribute("href","https://"+dataList[4])
+    if(dataList[4] !== undefined){
+        companyLink.innerHTML = dataList[4]
+        companyLink.setAttribute("href","https://"+dataList[4])
+    }else{
+        companyLink.innerHTML = "No website given"
+        companyLink.style.color = "blue"
+    }
     companyLink.style.backgroundColor = "#2d2b2b"
     companyLink.style.padding = "10px"
     companyLink.style.borderRadius = "10px"
@@ -252,6 +265,16 @@ function buttonClicked(dataList){
     resourcesText.style.marginTop = "25px"
 
     //this is executed after the button has been created
+    window.addEventListener('scroll', function() {
+        var sidebar = document.getElementById("infoId");
+        var headerHeight = document.querySelector(".top_bar").offsetHeight;
+        if (window.scrollY > headerHeight) {
+            sidebar.classList.add("sticky");
+        } else {
+            sidebar.classList.remove("sticky");
+        }
+    });
+    //same with this
     exit_button.addEventListener('click', () => {
         for(let i = 0; i < exampleData.length; i++){
             buttons[i].style.width = "90%"
@@ -264,9 +287,6 @@ function buttonClicked(dataList){
         infoPage.remove()
     })
 }
-
-// function infoPanelRemove (){
-// } look into this later
 
 // creates button events
 function buttonEvents(list){
