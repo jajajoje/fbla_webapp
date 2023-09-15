@@ -33,7 +33,7 @@ var companyName = []
 var companyResources = []
 var oldListLength = null
 var infoPage = null
-var exit_button = null
+var exitButton = null
 var titleHeader = null
 var miniTitle = null
 var resourcesText = null
@@ -52,7 +52,7 @@ function refreshList(list){
             companyButton[i].remove()
         }
         if(document.getElementById("infoId") !== null){
-            exit_button.remove()
+            exitButton.remove()
             titleHeader.remove()
             miniTitle.remove()
             resourcesText.remove()
@@ -129,7 +129,7 @@ function importCompanyList (file){
 
     reader.readAsText(file)
 }
-// csv shinanigans
+//csv shinanigans
 function csvToArray(csvString) {
     const rows = csvString.split('\n')
     const result = []
@@ -187,20 +187,13 @@ function buttonClicked(dataList){
     let container = document.getElementById("buttonBox");
     infoPage.setAttribute("id", "infoId")
     container.appendChild(infoPage)
-    infoPage.classList.add("infoPage")
+    infoPage.classList.add("info_page")
     //button creaton
-    exit_button = document.createElement("button")
+    exitButton = document.createElement("button")
     let containerPower = document.getElementById("infoId")
-    containerPower.appendChild(exit_button)
-    exit_button.innerHTML = "<b>x</b>"
-    exit_button.style.height = "35px"
-    exit_button.style.aspectRatio = "1/1"
-    exit_button.style.backgroundColor = "red"
-    exit_button.style.margin= "10px";
-    // exit_button.style.position = "absolute"
-    exit_button.style.borderRadius = "30%"
-    exit_button.style.fontSize = "150%"
-    exit_button.style.right = "20px"
+    containerPower.appendChild(exitButton)
+    exitButton.innerHTML = "<b>x</b>"
+    exitButton.classList.add("exit_button")
     //main title (company name)
     titleHeader = document.createElement("h3")
     containerPower.appendChild(titleHeader)
@@ -213,6 +206,7 @@ function buttonClicked(dataList){
     titleHeader.style.fontSize = "35px"
     titleHeader.style.margin = "10px"
     titleHeader.style.textAlign = "center"
+    titleHeader.style.fontFamily = "monospace"
     //mini infotitle (date created and location)
     miniTitle = document.createElement("p")
     containerPower.appendChild(miniTitle)
@@ -232,7 +226,8 @@ function buttonClicked(dataList){
         resourcesText.innerHTML = "No resources given"
     }
     resourcesText.style.margin = "10px"
-    resourcesText.style.marginTop = "25px"
+    resourcesText.style.fontFamily = "monospace"
+    resourcesText.style.marginBottom = "10px"
     //website(hyperlink)
     companyLinkWrap = document.createElement("p")
     companyLink = document.createElement("a")
@@ -246,12 +241,10 @@ function buttonClicked(dataList){
         companyLink.style.color = "blue"
     }
     companyLink.style.backgroundColor = "#2d2b2b"
-    companyLink.style.padding = "10px"
+    companyLink.style.padding = "5px"
     companyLink.style.borderRadius = "10px"
     companyLinkWrap.style.textAlign = "center"
-    resourcesText.style.marginTop = "25px"
-
-    //this is executed after the button has been created
+    companyLinkWrap.style.fontFamily = "monospace"
     let headerHeight = document.querySelector(".top_bar").offsetHeight;
     if (window.scrollY > headerHeight) {
         containerPower.style.position = "fixed"
@@ -260,21 +253,25 @@ function buttonClicked(dataList){
         containerPower.style.position = "absolute"
         containerPower.style.top = ""
     }
+    //this is executed after the button has been created
     window.addEventListener('scroll', function() {
         if (window.scrollY > headerHeight) {
+            //ill need to remove it too
+            // containerPower.classList.add(info_panel_scroll)
             containerPower.style.position = "fixed"
             containerPower.style.top = "0px"
         } else {
+            // containerPower.classList.add(info_panel_default)
             containerPower.style.position = "absolute"
             containerPower.style.top = ""
         }
     });
     //same with this
-    exit_button.addEventListener('click', () => {
+    exitButton.addEventListener('click', () => {
         for(let i = 0; i < exampleData.length; i++){
             companyButton[i].style.width = "90%"
         }
-        exit_button.remove()
+        exitButton.remove()
         titleHeader.remove()
         miniTitle.remove()
         resourcesText.remove()
@@ -283,7 +280,7 @@ function buttonClicked(dataList){
     })
 }
 
-// creates button events
+//creates button events
 function buttonEvents(list){
     for(let i = 0; i < list.length; i++){
         companyButton[i].addEventListener('click', () => {
@@ -292,7 +289,7 @@ function buttonEvents(list){
     }
 }
 
-// buttonEvents(exampleData)
+//buttonEvents(exampleData)
 
 dropdown.addEventListener('change', function () {
     let valueInput = dropdown.value
