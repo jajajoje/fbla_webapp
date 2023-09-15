@@ -256,12 +256,9 @@ function buttonClicked(dataList){
     //this is executed after the button has been created
     window.addEventListener('scroll', function() {
         if (window.scrollY > headerHeight) {
-            //ill need to remove it too
-            // containerPower.classList.add(info_panel_scroll)
             containerPower.style.position = "fixed"
             containerPower.style.top = "0px"
         } else {
-            // containerPower.classList.add(info_panel_default)
             containerPower.style.position = "absolute"
             containerPower.style.top = ""
         }
