@@ -28,7 +28,7 @@ var exampleData = [
     ["Company Z", "Consulting, Business Advisory", "Sydney, Australia", 1994, "www.companyZ.com"],
 ]
 
-var buttons = []
+var companyButton = []
 var companyName = []
 var companyResources = []
 var oldListLength = null
@@ -49,7 +49,7 @@ refreshList(exampleData)
 function refreshList(list){
     if(document.getElementById("button0") !== null){
         for(let i = 0; i < oldListLength; i++){
-            buttons[i].remove()
+            companyButton[i].remove()
         }
         if(document.getElementById("infoId") !== null){
             exit_button.remove()
@@ -60,37 +60,25 @@ function refreshList(list){
             infoPage.remove()
         }
     }
-    buttons = []
+    companyButton = []
+    let container = document.getElementById("buttonBox")
     for(let i = 0; i < list.length; i++){
-        buttons[i] = document.createElement("button")
+        companyButton[i] = document.createElement("button")
         companyName[i] = document.createElement("p")
         companyResources[i] = document.createElement("p") 
-        let container = document.getElementById("spreadsheet")
-        container.appendChild(buttons[i])
-        buttons[i].setAttribute("id", "button"+i)
-        buttons[i].setAttribute("class", "dataButtons")
-        buttons[i].appendChild(companyName[i])
-        buttons[i].appendChild(companyResources[i])
+        container.appendChild(companyButton[i])
+        companyButton[i].setAttribute("id", "button"+i)
+        companyButton[i].setAttribute("class", "dataButtons")
+        companyButton[i].appendChild(companyName[i])
+        companyButton[i].appendChild(companyResources[i])
         companyName[i].innerHTML = '<b>'+list[i][0]+'</b>'
         companyResources[i].innerHTML = list[i][1]
-        companyName[i].style.position = "absolute"
-        companyName[i].style.textAlign = "left"
-        companyName[i].style.top = "-5px"
-        companyResources[i].style.position = "absolute"
-        companyResources[i].style.textAlign = "center"
-        companyResources[i].style.left = "30%"
-        companyResources[i].style.top = "-5px"
-        buttons[i].style.backgroundColor = "#1d52bc"
-        buttons[i].style.width = "90%"
-        buttons[i].style.height = "50px"
-        buttons[i].style.position = "absolute"
-        buttons[i].style.marginTop = "-25px"
-        buttons[i].style.left = "5%"
-        buttons[i].style.top = 135+60*i+"px"
-        buttons[i].style.fontSize = "18px"
-        buttons[i].style.border = "3px solid #2d2b2b"
+        companyName[i].classList.add("company_name_button")
+        companyResources[i].classList.add("company_resources_button")
+        companyButton[i].classList.add("company_button")
+        companyButton[i].style.top = 120+65*i+"px"
     }
-    document.getElementById("spreadsheet").style.height = list.length*61
+    container.style.height = 15+(list.length*65)+"px"
     buttonEvents(exampleData)
 }
 //called as soon as the text input or drop down change
@@ -98,11 +86,11 @@ function listSearch(textInput, value, list2d){
     let trueTimes = 0;
     for(var l = 0; l < list2d.length; l++){
         if(simpleSearch(list2d[l][value].toString(),textInput.toString())){
-            buttons[l].style.top = 135+60*trueTimes+"px"
-            buttons[l].style.display = "block"
+            companyButton[l].style.top = 135+60*trueTimes+"px"
+            companyButton[l].style.display = "block"
             trueTimes ++
         }else{
-            buttons[l].style.display = "none"
+            companyButton[l].style.display = "none"
         }
     }
 
@@ -190,14 +178,13 @@ function convertArrayToCSV(data) {
 //this creates the info panel when a buttons on a row are made
 function buttonClicked(dataList){
     for(let i = 0; i < exampleData.length; i++){
-        buttons[i].style.width = "65%"
+        companyButton[i].style.width = "65%"
     }
     //panel
     let element = document.getElementById("infoId")
     element !== null ? document.getElementById("infoId").remove() : 0
-    
     infoPage = document.createElement("div");
-    let container = document.getElementById("spreadsheet");
+    let container = document.getElementById("buttonBox");
     infoPage.setAttribute("id", "infoId")
     container.appendChild(infoPage)
     infoPage.classList.add("infoPage")
@@ -210,7 +197,7 @@ function buttonClicked(dataList){
     exit_button.style.aspectRatio = "1/1"
     exit_button.style.backgroundColor = "red"
     exit_button.style.margin= "10px";
-    exit_button.style.position = "absolute"
+    // exit_button.style.position = "absolute"
     exit_button.style.borderRadius = "30%"
     exit_button.style.fontSize = "150%"
     exit_button.style.right = "20px"
@@ -266,18 +253,20 @@ function buttonClicked(dataList){
 
     //this is executed after the button has been created
     window.addEventListener('scroll', function() {
-        var sidebar = document.getElementById("infoId");
+        let containerPower = document.getElementById("infoId");
         var headerHeight = document.querySelector(".top_bar").offsetHeight;
         if (window.scrollY > headerHeight) {
-            sidebar.classList.add("sticky");
+            containerPower.style.position = "fixed"
+            containerPower.style.top = "0px"
         } else {
-            sidebar.classList.remove("sticky");
+            containerPower.style.position = "absolute"
+            containerPower.style.top = ""
         }
     });
     //same with this
     exit_button.addEventListener('click', () => {
         for(let i = 0; i < exampleData.length; i++){
-            buttons[i].style.width = "90%"
+            companyButton[i].style.width = "90%"
         }
         exit_button.remove()
         titleHeader.remove()
@@ -291,7 +280,7 @@ function buttonClicked(dataList){
 // creates button events
 function buttonEvents(list){
     for(let i = 0; i < list.length; i++){
-        buttons[i].addEventListener('click', () => {
+        companyButton[i].addEventListener('click', () => {
             buttonClicked(list[i])
         })
     }
