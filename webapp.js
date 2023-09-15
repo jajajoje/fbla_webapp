@@ -252,9 +252,15 @@ function buttonClicked(dataList){
     resourcesText.style.marginTop = "25px"
 
     //this is executed after the button has been created
+    let headerHeight = document.querySelector(".top_bar").offsetHeight;
+    if (window.scrollY > headerHeight) {
+        containerPower.style.position = "fixed"
+        containerPower.style.top = "0px"
+    } else {
+        containerPower.style.position = "absolute"
+        containerPower.style.top = ""
+    }
     window.addEventListener('scroll', function() {
-        let containerPower = document.getElementById("infoId");
-        var headerHeight = document.querySelector(".top_bar").offsetHeight;
         if (window.scrollY > headerHeight) {
             containerPower.style.position = "fixed"
             containerPower.style.top = "0px"
