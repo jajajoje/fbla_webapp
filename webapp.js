@@ -68,11 +68,18 @@ function refreshList(list){
         companyResources[i] = document.createElement("p") 
         container.appendChild(companyButton[i])
         companyButton[i].setAttribute("id", "button"+i)
-        companyButton[i].setAttribute("class", "dataButtons")
         companyButton[i].appendChild(companyName[i])
         companyButton[i].appendChild(companyResources[i])
-        companyName[i].innerHTML = '<b>'+list[i][0]+'</b>'
-        companyResources[i].innerHTML = list[i][1]
+        if(list[i][0] !== undefined){
+            companyName[i].innerHTML = '<b>'+list[i][0]+'</b>'
+        }else{
+            companyName[i].innerHTML = "<b>No company name</b>"
+        }
+        if(list[i][1] !== undefined){
+            companyResources[i].innerHTML = list[i][1]
+        }else{
+            companyResources[i].innerHTML = "No resources"
+        }
         companyName[i].classList.add("company_name_button")
         companyResources[i].classList.add("company_resources_button")
         companyButton[i].classList.add("company_button")
@@ -86,7 +93,7 @@ function listSearch(textInput, value, list2d){
     let trueTimes = 0;
     for(var l = 0; l < list2d.length; l++){
         if(simpleSearch(list2d[l][value].toString(),textInput.toString())){
-            companyButton[l].style.top = 135+60*trueTimes+"px"
+            companyButton[l].style.top = 120+65*trueTimes+"px"
             companyButton[l].style.display = "block"
             trueTimes ++
         }else{
@@ -117,7 +124,7 @@ function exportCompanyList (){
 function importCompanyList (file){
     oldListLength = exampleData.length
     const reader = new FileReader()
-    //reader.onload is async
+    //reader.onload is async wasted 4 days on it
     reader.onload = function(event) {
         const csvContent = event.target.result
         exampleData = csvToArray(csvContent)
@@ -215,16 +222,22 @@ function buttonClicked(dataList){
     }else{
         miniTitle.innerHTML = "No date created given"
     }
-    miniTitle.style.fontSize = "10px"
+    miniTitle.style.fontSize = "1em"
     miniTitle.style.textAlign = "center"
     //Company resources
     resourcesText = document.createElement("p")
     containerPower.appendChild(resourcesText)
     if(dataList[1] !== undefined){
-        resourcesText.innerHTML = dataList[1]
+        let resourcesList = dataList[1].split(",")
+        let resourcesTextWrite = ""
+        for(v = 0; v < resourcesList.length; v++){
+            resourcesTextWrite += resourcesList[v]+"<br>"
+        }
+        resourcesText.innerHTML = resourcesTextWrite
     }else{
         resourcesText.innerHTML = "No resources given"
     }
+    resourcesText.style.fontSize = "1.5em"
     resourcesText.style.margin = "10px"
     resourcesText.style.fontFamily = "monospace"
     resourcesText.style.marginBottom = "10px"
@@ -236,6 +249,7 @@ function buttonClicked(dataList){
     if(dataList[4] !== undefined){
         companyLink.innerHTML = dataList[4]
         companyLink.setAttribute("href","https://"+dataList[4])
+
     }else{
         companyLink.innerHTML = "No website given"
         companyLink.style.color = "blue"
@@ -243,6 +257,7 @@ function buttonClicked(dataList){
     companyLink.style.backgroundColor = "#2d2b2b"
     companyLink.style.padding = "5px"
     companyLink.style.borderRadius = "10px"
+    companyLink.style.fontSize = "1.2em"
     companyLinkWrap.style.textAlign = "center"
     companyLinkWrap.style.fontFamily = "monospace"
     let headerHeight = document.querySelector(".top_bar").offsetHeight;

@@ -19,13 +19,13 @@
     right: 1%;
     top: 28px;
     background-color: #1d52bc;
-    width: 9%;
-    height: 26px;
+    width: 8.5%;
+    height: 27px;
     border-radius: 10px;
     border: 3px solid #2d2b2b;
     font-size: 1.28em;
     z-index: 1;
-    padding-top: 9px;
+    padding-top: 7px;
 }
 .import_button::file-selector-button{
     display: none;
@@ -35,7 +35,7 @@
     right: 11%;
     top: 28px;
     background-color: #1d52bc;
-    width: 9%;
+    width: 8.5%;
     height: 40px;
     border-radius: 10px;
     border: 3px solid #2d2b2b;
@@ -110,4 +110,5 @@
     border-radius: 30%;
     font-size: 1.5em;
     position: absolute;
+    border: 3px solid #2d2b2b;
 }
