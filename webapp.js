@@ -123,9 +123,9 @@ function importCompanyList (file){
         exampleData = csvToArray(csvContent)
         document.getElementById('textSearch').value = ''
         var dropdownIndex = document.getElementById('dropdown')
-        dropdownIndex.selectedIndex = 0; 
+        dropdownIndex.selectedIndex = 0
         refreshList(exampleData)
-    };
+    }
 
     reader.readAsText(file)
 }
